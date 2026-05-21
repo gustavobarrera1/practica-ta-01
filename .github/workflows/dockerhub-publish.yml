@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Hub Publish
 
 on:
   push:
@@ -26,8 +26,22 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag gustavobarrera/flaskapp:$IMAGE_TAG
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: 'docker.io/gustavobarrera/flaskapp:$IMAGE_TAG'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
 
       - name: Push Docker image
         run: docker push gustavobarrera/flaskapp:$IMAGE_TAG
