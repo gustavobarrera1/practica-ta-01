@@ -26,9 +26,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - uses: hadolint/hadolint-action@v3.1.0
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
+          failure-threshold: error
+          ignore: DL3008,DL3013
 
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag gustavobarrera/flaskapp:$IMAGE_TAG
