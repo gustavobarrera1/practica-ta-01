@@ -14,6 +14,9 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
+defaults:
+  run:
+    working-directory: ./app
 
 jobs:
   build:
