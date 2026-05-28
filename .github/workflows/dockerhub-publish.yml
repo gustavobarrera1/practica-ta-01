@@ -2,9 +2,8 @@ name: Docker Hub Publish
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+    paths:
+      - 'app/**'
 
 defaults:
   run:
