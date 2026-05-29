@@ -38,12 +38,13 @@ resource "aws_ssm_document" "deploy_app" {
             "aws ssm get-parameter --name /flaskapp/${var.env}/github/deploy_key --with-decryption --query Parameter.Value --output text > /root/.ssh/id_ed25519",
             "chmod 600 /root/.ssh/id_ed25519",
             "ssh-keyscan github.com >> /root/.ssh/known_hosts",
-            "mkdir -p /opt/app",
-            "cd /opt/app",
+            "mkdir -p /opt/dev",
+            "cd /opt/dev",
             
-            "if [ ! -d /opt/app/.git ]; then git clone git@github.com:gustavobarrera1/practica-ta-01.git .; fi",
-            "git pull origin main",
-            
+            "if [ ! -d /opt/dev/.git ]; then git clone git@github.com:gustavobarrera1/practica-ta-01.git .; fi",
+            "git pull origin main",          
+            "cd /opt/dev/app",
+
             "echo \"DB_HOST=$(aws ssm get-parameter --name /flaskapp/${var.env}/database/db_host --with-decryption --query Parameter.Value --output text)\" > .env",
             "echo \"DB_NAME=$(aws ssm get-parameter --name /flaskapp/${var.env}/database/db_name --with-decryption --query Parameter.Value --output text)\" >> .env",
             "echo \"DB_USERNAME=$(aws ssm get-parameter --name /flaskapp/${var.env}/database/db_username --with-decryption --query Parameter.Value --output text)\" >> .env",
