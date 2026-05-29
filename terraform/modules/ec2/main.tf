@@ -12,6 +12,11 @@ resource "aws_instance" "ec2" {
   user_data = file("${path.module}/../../install_docker.sh")
 }
 
+resource "time_sleep" "wait_for_instance_setup" {
+  depends_on      = [aws_instance.ec2]
+  create_duration = "1m"
+}
+
 resource "aws_ssm_document" "deploy_app" {
   name          = "DeployApp"
   document_type = "Command"
@@ -51,13 +56,7 @@ resource "aws_ssm_document" "deploy_app" {
       }
     ]
   })
-  depends_on = [ aws_instance.ec2 ]
-}
-
-
-resource "time_sleep" "wait_for_instance_setup" {
-  depends_on      = [aws_instance.ec2]
-  create_duration = "1m"
+  depends_on = [ aws_instance.ec2, time_sleep.wait_for_instance_setup ]
 }
 
 resource "aws_ssm_association" "deploy_app_assoc" {
