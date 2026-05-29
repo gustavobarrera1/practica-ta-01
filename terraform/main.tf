@@ -11,6 +11,7 @@ module "ssm" {
   db_password = var.db_password
   db_username = var.db_username
   env         = var.env
+  github_deploy_key = var.github_deploy_key
   kms_key_id  = module.security.kms_key_id
 }
 

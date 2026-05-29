@@ -14,6 +14,10 @@ variable "db_password" {
   type = string
 }
 
+variable "github_deploy_key" {
+  type = string
+}
+
 variable "env" {
   type = string
 }

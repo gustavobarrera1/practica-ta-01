@@ -58,7 +58,8 @@ resource "aws_ssm_parameter" "github_deploy_key" {
   name        = "/flaskapp/${var.env}/github/deploy_key"
   description = "SSH private deploy key"
   type        = "SecureString"
-  value       = file("${path.module}../../../keys/deploy_key")
+  #value       = file("${path.module}../../../keys/deploy_key")
+  value       = var.github_deploy_key
 
   key_id = var.kms_key_id
 

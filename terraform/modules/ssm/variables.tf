@@ -19,6 +19,11 @@ variable "db_username" {
   sensitive   = true 
 }
 
+variable "github_deploy_key" {
+  type        = string
+  sensitive   = true
+}
+
 variable "env" {
   type = string
 }
