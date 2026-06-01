@@ -34,10 +34,10 @@ jobs:
       - name: Plan
         env:
           TF_VAR_github_deploy_key: ${{ secrets.DEPLOY_KEY }}
-          TF_VAR_db_host: ${{ secrets.DB_HOST }}
-          TF_VAR_db_name: ${{ secrets.DB_NAME }}
-          TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
-          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_db_host: ${{ secrets.TF_VAR_DB_HOST }}
+          TF_VAR_db_name: ${{ secrets.TF_VAR_DB_NAME }}
+          TF_VAR_db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
+          TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
           TF_VAR_env: development
         run: terraform plan
 
