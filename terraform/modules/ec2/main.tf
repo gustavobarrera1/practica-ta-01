@@ -94,5 +94,5 @@ resource "aws_ssm_document" "deploy_app_github" {
       }
     ]
   })
-  depends_on = [ aws_instance.ec2, aws_ssm_document.deploy_app ]
+  depends_on = [ aws_instance.ec2, time_sleep.wait_for_instance_setup, aws_ssm_document.deploy_app, aws_ssm_association.deploy_app_assoc ]
 }
