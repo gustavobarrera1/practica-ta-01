@@ -12,6 +12,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' }}
 
     permissions:
       id-token: write
@@ -40,14 +41,23 @@ jobs:
 
           echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
 
-      - name: Wait for SSM Document
+      - name: Wait for SSM Document and Propagation
         run: |
+          echo "Iniciando verificación del documento SSM..."
+          
+          # 1. Esperar a que la API responda de forma consistente 
           timeout 30 bash -c '
-            until aws ssm get-document --name DeployAppGithub >/dev/null 2>&1; do
-              echo "Waiting for DeployAppGithub..."
+            until aws ssm get-document --name DeployAppGithub --query "Name" --output text >/dev/null 2>&1; do
+              echo "El documento aún no está disponible en la API, reintentando en 5s..."
               sleep 5
             done
           '
+          
+          # 2. El truco para la consistencia eventual:
+          # Una vez que la API lo ve, congelamos el pipeline unos segundos 
+          # para que se propague al motor de Send-Command.
+          echo "¡Documento detectado! Esperando 15 segundos adicionales para la propagación interna de AWS..."
+          sleep 15
 
       - name: Deploy via SSM Document
         run: |
