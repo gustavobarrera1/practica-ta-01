@@ -40,6 +40,15 @@ jobs:
 
           echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
 
+      - name: Wait for SSM Document
+        run: |
+          timeout 30 bash -c '
+            until aws ssm get-document --name DeployAppGithub >/dev/null 2>&1; do
+              echo "Waiting for DeployAppGithub..."
+              sleep 5
+            done
+          '
+
       - name: Deploy via SSM Document
         run: |
           aws ssm send-command \
