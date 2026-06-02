@@ -1,13 +1,13 @@
 resource "aws_instance" "ec2" {
-  ami             = "ami-0ebfd941bbafe70c6"
-  instance_type   = "t2.micro"
+  ami             = "${var.ec2_ami}"
+  instance_type   = "${var.ec2_instance_type}"
   vpc_security_group_ids = [var.security_group_id]
 
   iam_instance_profile = var.instance_profile
 
   tags = {
-    Name = "tf-lab-01"
-    Environment = var.env
+    Name = "${var.ec2_name}"
+    Environment = "${var.env}"
   }
 
   user_data = file("${path.module}/../../install_docker.sh")
@@ -36,7 +36,7 @@ resource "aws_ssm_document" "deploy_app" {
             "set -e", # Esto está acá porque puede ser el caso que no este ssm totalmente disponible. En vez de hacerlo mediante el script de la vm. Se tiene que revisar para ver de poder quitar está sección.
             "mkdir -p /root/.ssh",
             "chmod 700 /root/.ssh",
-            "aws ssm get-parameter --name /flaskapp/${var.env}/github/deploy_key --with-decryption --query Parameter.Value --output text > /root/.ssh/id_ed25519",
+            "aws ssm get-parameter --name /${var.app_name}/${var.env}/github/deploy_key --with-decryption --query Parameter.Value --output text > /root/.ssh/id_ed25519",
             "chmod 600 /root/.ssh/id_ed25519",
             "ssh-keyscan github.com >> /root/.ssh/known_hosts",
             "mkdir -p /opt/dev",
@@ -82,10 +82,10 @@ resource "aws_ssm_document" "deploy_app_github" {
             "set -e",        
             "cd /opt/dev/app",
 
-            "echo \"DB_HOST=$(aws ssm get-parameter --name /flaskapp/${var.env}/database/db_host --with-decryption --query Parameter.Value --output text)\" > .env",
-            "echo \"DB_NAME=$(aws ssm get-parameter --name /flaskapp/${var.env}/database/db_name --with-decryption --query Parameter.Value --output text)\" >> .env",
-            "echo \"DB_USERNAME=$(aws ssm get-parameter --name /flaskapp/${var.env}/database/db_username --with-decryption --query Parameter.Value --output text)\" >> .env",
-            "echo \"DB_PASSWORD=$(aws ssm get-parameter --name /flaskapp/${var.env}/database/db_password --with-decryption --query Parameter.Value --output text)\" >> .env",
+            "echo \"DB_HOST=$(aws ssm get-parameter --name /${var.app_name}/${var.env}/database/db_host --with-decryption --query Parameter.Value --output text)\" > .env",
+            "echo \"DB_NAME=$(aws ssm get-parameter --name /${var.app_name}/${var.env}/database/db_name --with-decryption --query Parameter.Value --output text)\" >> .env",
+            "echo \"DB_USERNAME=$(aws ssm get-parameter --name /${var.app_name}/${var.env}/database/db_username --with-decryption --query Parameter.Value --output text)\" >> .env",
+            "echo \"DB_PASSWORD=$(aws ssm get-parameter --name /${var.app_name}/${var.env}/database/db_password --with-decryption --query Parameter.Value --output text)\" >> .env",
             
             "docker compose -f docker-compose-aws.yaml down || true",
             "docker compose -f docker-compose-aws.yaml up -d"

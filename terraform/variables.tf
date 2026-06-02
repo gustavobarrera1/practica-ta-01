@@ -21,3 +21,24 @@ variable "github_deploy_key" {
 variable "env" {
   type = string
 }
+
+variable "region" {
+  type = string
+}
+
+variable "app_name" {
+  type = string
+}
+
+variable "ec2_name" {
+  type = string
+}
+
+variable "ec2_instance_type" {
+  type = string
+
+}
+
+variable "ec2_ami" {
+  type = string
+}

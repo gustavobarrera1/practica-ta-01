@@ -1,5 +1,5 @@
 resource "aws_ssm_parameter" "secure_db_host" {
-  name        = "/flaskapp/${var.env}/database/db_host"
+  name        = "/${var.app_name}/${var.env}/database/db_host"
   description = "Host de la base de datos"
   type        = "SecureString"
   value       = var.db_host         
@@ -13,7 +13,7 @@ resource "aws_ssm_parameter" "secure_db_host" {
 }
 
 resource "aws_ssm_parameter" "secure_db_name" {
-  name        = "/flaskapp/${var.env}/database/db_name"
+  name        = "/${var.app_name}/${var.env}/database/db_name"
   description = "Nombre de la base de datos"
   type        = "SecureString"
   value       = var.db_name         
@@ -27,7 +27,7 @@ resource "aws_ssm_parameter" "secure_db_name" {
 }
 
 resource "aws_ssm_parameter" "secure_db_pass" {
-  name        = "/flaskapp/${var.env}/database/db_password"
+  name        = "/${var.app_name}/${var.env}/database/db_password"
   description = "Contraseña cifrada de la base de datos"
   type        = "SecureString"
   value       = var.db_password         
@@ -41,7 +41,7 @@ resource "aws_ssm_parameter" "secure_db_pass" {
 }
 
 resource "aws_ssm_parameter" "secure_db_user" {
-  name        = "/flaskapp/${var.env}/database/db_username"
+  name        = "/${var.app_name}/${var.env}/database/db_username"
   description = "Nombre de usuario cifrado de la base de datos"
   type        = "SecureString"
   value       = var.db_username         
@@ -55,7 +55,7 @@ resource "aws_ssm_parameter" "secure_db_user" {
 }
 
 resource "aws_ssm_parameter" "github_deploy_key" {
-  name        = "/flaskapp/${var.env}/github/deploy_key"
+  name        = "/${var.app_name}/${var.env}/github/deploy_key"
   description = "SSH private deploy key"
   type        = "SecureString"
   #value       = file("${path.module}../../../keys/deploy_key")

@@ -3,18 +3,18 @@ resource "aws_kms_key" "ssm" {
   enable_key_rotation = true
 
   tags = {
-    Service = "flaskapp"
-    Env     = var.env
+    Service = "${var.app_name}"
+    Env     = "${var.env}"
   }
 }
 
 resource "aws_kms_alias" "ssm" {
-  name          = "alias/flaskapp-${var.env}"
+  name          = "alias/${var.app_name}-${var.env}"
   target_key_id = aws_kms_key.ssm.key_id
 }
 
 resource "aws_iam_role" "ec2_role" {
-  name = "flaskapp-${var.env}-ec2-role"
+  name = "${var.app_name}-${var.env}-ec2-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -29,7 +29,7 @@ resource "aws_iam_role" "ec2_role" {
 }
 
 resource "aws_iam_policy" "ssm_policy" {
-  name = "flaskapp-${var.env}-ssm-policy"
+  name = "${var.app_name}-${var.env}-ssm-policy"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -41,7 +41,7 @@ resource "aws_iam_policy" "ssm_policy" {
           "ssm:GetParameters",
           "ssm:GetParametersByPath"
         ]
-        Resource = "arn:aws:ssm:us-east-1:058222268637:parameter/flaskapp/${var.env}/*"
+        Resource = "arn:aws:ssm:us-east-1:058222268637:parameter/${var.app_name}/${var.env}/*"
       },
       {
         Effect = "Allow"

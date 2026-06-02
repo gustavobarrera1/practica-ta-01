@@ -28,13 +28,13 @@ jobs:
         run: |
           INSTANCE_ID=$(aws ec2 describe-instances \
             --filters \
-              "Name=tag:Name,Values=tf-lab-01" \
+              "Name=tag:Name,Values=${{ secrets.TF_VAR_EC2_NAME }}" \
               "Name=instance-state-name,Values=running" \
             --query "Reservations[].Instances[].InstanceId" \
             --output text)
 
           if [ -z "$INSTANCE_ID" ] || [ "$INSTANCE_ID" = "None" ]; then
-            echo "No running EC2 found (tf-lab-01)"
+            echo "No running EC2 found (${{ secrets.TF_VAR_EC2_NAME }})"
             exit 1
           fi
 
@@ -44,5 +44,5 @@ jobs:
         run: |
           aws ssm send-command \
             --document-name DeployAppGithub \
-            --targets "Key=tag:Name,Values=tf-lab-01" \
+            --targets "Key=tag:Name,Values=${{ secrets.TF_VAR_EC2_NAME }}" \
             --comment "Deploy triggered by GitHub Actions"

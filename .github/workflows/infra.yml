@@ -38,7 +38,12 @@ jobs:
           TF_VAR_db_name: ${{ secrets.TF_VAR_DB_NAME }}
           TF_VAR_db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
           TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
-          TF_VAR_env: development
+          TF_VAR_env: ${{ secrets.TF_VAR_ENV }}
+          TF_VAR_app_name: ${{ secrets.TF_VAR_APP_NAME }}
+          TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
+          TF_VAR_ec2_name: ${{ secrets.TF_VAR_EC2_NAME }}
+          TF_VAR_ec2_instance_type: ${{ secrets.TF_VAR_EC2_INSTANCE_TYPE }}
+          TF_VAR_ec2_ami: ${{ secrets.TF_VAR_EC2_AMI }}
         run: terraform plan
 
       - name: Apply
@@ -48,5 +53,10 @@ jobs:
           TF_VAR_db_name: ${{ secrets.TF_VAR_DB_NAME }}
           TF_VAR_db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
           TF_VAR_db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
-          TF_VAR_env: development
+          TF_VAR_env: ${{ secrets.TF_VAR_ENV }}
+          TF_VAR_app_name: ${{ secrets.TF_VAR_APP_NAME }}
+          TF_VAR_region: ${{ secrets.TF_VAR_REGION }}
+          TF_VAR_ec2_name: ${{ secrets.TF_VAR_EC2_NAME }}
+          TF_VAR_ec2_instance_type: ${{ secrets.TF_VAR_EC2_INSTANCE_TYPE }}
+          TF_VAR_ec2_ami: ${{ secrets.TF_VAR_EC2_AMI }}
         run: terraform apply -auto-approve
