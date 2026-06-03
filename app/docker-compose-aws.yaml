@@ -1,7 +1,7 @@
 services:
 
   app:
-    image: gustavobarrera/flaskapp:v0.0.1 #Agregar versionado via GitHub Actions
+    image: gustavobarrera/flaskapp:latest 
     ports:
       - "5000:5000"
     depends_on:
