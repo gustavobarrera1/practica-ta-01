@@ -69,3 +69,7 @@ Se agregó un script para la instalación automática de Docker en la instancia 
 Al utilizar una instancia EC2 directamente en lugar de un servicio administrado de contenedores, fue necesario investigar y evaluar distintas alternativas para implementar el proyecto de forma segura y escalable.
 
 Por este motivo, se utilizó principalmente AWS SSM para el despliegue de la aplicación y la administración de accesos a la instancia. Además, se implementó el acceso al repositorio mediante SSH, ya que inicialmente se trataba de un repositorio privado, y se automatizó el despliegue de nuevas versiones de la aplicación ante cada cambio realizado.
+
+## Video de demostración en AWS:
+
+https://drive.google.com/file/d/1Vt-Zukj1nqnt3CMAlmDZzJwGHDb8M-dm/view
